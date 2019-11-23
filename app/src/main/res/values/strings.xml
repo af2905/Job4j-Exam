@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Job4jExam</string>
 
-    <string name="Hello">Hello Anatolii!</string>
+    <string name="Hello">Hello AF</string>
+    <string name="back">back</string>
+    <string name="next">next</string>
+
 </resources>
