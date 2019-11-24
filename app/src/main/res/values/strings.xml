@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Job4jExam</string>
 
-    <string name="Hello">Hello AF</string>
-    <string name="back">back</string>
-    <string name="next">next</string>
+    <string name="Hello">Добро пожаловать AF</string>
+    <string name="back">Назад</string>
+    <string name="next">Следующий</string>
 
     <string name="domain_prompt">Выберите область</string>
     <string name="exp_date">Дата проведения испытания</string>
@@ -15,6 +15,17 @@
     </string-array>
 
     <string name="date_prompt">Выберите дату</string>
+    <string name="object_name">Имя объекта</string>
+    <string name="street_and_house">Улица и дом</string>
+    <string name="customer_name">ФИО заказчика</string>
+    <string name="air_temperature">Температура воздуха</string>
+    <string name="air_humidity">Влажность воздуха</string>
+    <string name="atmosphere_pressure">Атмосферное давление</string>
+    <string name="report_number">Номер отчета</string>
+    <string name="radiobutton1">RadioButton</string>
+    <string name="radiobutton">RadioButton</string>
+    <string name="radiobutton3">RadioButton</string>
+    <string name="radiobutton4">RadioButton</string>
     <string-array name="date_arrays">
         <item>Выберите дату</item>
         <item>январь</item>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Job4jExam</string>
+    <string name="City">City</string>
+    <string name="Hello">Hello AF</string>
+    <string name="air_humidity">Air humidity</string>
+    <string name="air_temperature">Air temperature</string>
+    <string name="atmosphere_pressure">Atmosphere pressure</string>
+    <string name="back">Back</string>
+    <string name="customer_name">Customer name</string>
+    <string name="date_prompt">Date prompt</string>
+    <string name="domain_prompt">Domain prompt</string>
+    <string name="exp_date">Test date</string>
+    <string name="next">Next</string>
+    <string name="object_name">Object name</string>
+    <string name="report_number">Report number</string>
+    <string name="street_and_house">Street and house</string>
+    <string name="radiobutton1">RadioButton</string>
+    <string name="radiobutton">RadioButton</string>
+    <string name="radiobutton3">RadioButton</string>
+    <string name="radiobutton4">RadioButton</string>
+
+    <string-array name="domain_arrays">
+        <item>Domain prompt</item>
+        <item>Moscow</item>
+        <item>Saint Petersburg</item>
+    </string-array>
+
+    <string-array name="date_arrays">
+        <item>Test date</item>
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+</resources>
+
+
+
+
+
+
+
+
+
+
+
+
+

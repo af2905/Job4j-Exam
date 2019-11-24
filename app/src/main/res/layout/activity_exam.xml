@@ -17,34 +17,35 @@
         android:orientation="vertical">
 
         <RadioButton
-
             android:id="@+id/radioButton"
+            style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/radiobutton1" />
 
         <RadioButton
-
             android:id="@+id/radioButton2"
+            style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/radiobutton" />
 
         <RadioButton
             android:id="@+id/radioButton3"
-
+            style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/radiobutton3" />
 
         <RadioButton
             android:id="@+id/radioButton4"
-
+            style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/radiobutton4" />
 
     </RadioGroup>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,6 +53,7 @@
 
         <Button
             android:id="@+id/button"
+            style="@style/CustomButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -59,6 +61,7 @@
 
         <Button
             android:id="@+id/button2"
+            style="@style/CustomButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
