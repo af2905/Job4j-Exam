@@ -77,7 +77,8 @@
                 android:ems="10"
                 android:hint="@string/object_name"
                 android:inputType="textPersonName"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:autofillHints="" />
         </LinearLayout>
 
         <LinearLayout
@@ -101,7 +102,8 @@
                 android:ems="10"
                 android:hint="@string/street_and_house"
                 android:inputType="textPersonName"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:autofillHints="" />
         </LinearLayout>
 
         <LinearLayout
@@ -125,7 +127,8 @@
                 android:ems="10"
                 android:hint="@string/customer_name"
                 android:inputType="textPersonName"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
         </LinearLayout>
 
         <LinearLayout
@@ -149,7 +152,8 @@
                 android:ems="10"
                 android:hint="@string/air_temperature"
                 android:inputType="textPersonName"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:autofillHints="" />
         </LinearLayout>
 
         <LinearLayout
