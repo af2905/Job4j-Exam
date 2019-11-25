@@ -6,44 +6,44 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Hello" />
 
     <RadioGroup
+        android:id="@+id/variants"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:orientation="vertical">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/button1"
             style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/radiobutton1" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/button2"
             style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/radiobutton" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/button3"
             style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/radiobutton3" />
 
         <RadioButton
-            android:id="@+id/radioButton4"
+            android:id="@+id/button4"
             style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/radiobutton4" />
-
     </RadioGroup>
 
     <LinearLayout
@@ -52,7 +52,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/previous"
             style="@style/CustomButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,13 +60,11 @@
             android:text="@string/back" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/next"
             style="@style/CustomButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/next" />
     </LinearLayout>
-
-
 </LinearLayout>
