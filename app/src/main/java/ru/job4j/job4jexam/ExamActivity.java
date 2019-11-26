@@ -53,40 +53,22 @@ public class ExamActivity extends AppCompatActivity {
 
         final Button next = findViewById(R.id.next);
         next.setEnabled(false);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAnswer();
-                position++;
-                fillForm();
-            }
-        });
+        next.setOnClickListener(this::nextBtn);
+
         final Button previous = findViewById(R.id.previous);
         previous.setEnabled(false);
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                position--;
-                fillForm();
-            }
-        });
+        previous.setOnClickListener(this::previousBtn);
 
         variants = findViewById(R.id.variants);
-        variants.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                previous.setEnabled(position != 0);
-                next.setEnabled(position != questions.size() - 1);
+        variants.setOnCheckedChangeListener((group, checkedId) -> {
+            previous.setEnabled(position != 0);
+            next.setEnabled(position != questions.size() - 1);
 
-                if (variants.getCheckedRadioButtonId() != -1) {
-                    RadioButton button = findViewById(variants.getCheckedRadioButtonId());
-
-                    String asText = button.getText().toString();
-                    selectedVariants.add(asText);
-
-
-                    Log.d(TAG, "selectedVariants " + selectedVariants);
-                }
+            if (variants.getCheckedRadioButtonId() != -1) {
+                RadioButton button = findViewById(variants.getCheckedRadioButtonId());
+                String asText = button.getText().toString();
+                selectedVariants.add(asText);
+                Log.d(TAG, "selectedVariants " + selectedVariants);
             }
         });
 
@@ -136,11 +118,6 @@ public class ExamActivity extends AppCompatActivity {
     }
 
     private void fillForm() {
-        Button previous = findViewById(R.id.previous);
-        previous.setEnabled(position != 0);
-        Button next = findViewById(R.id.next);
-        next.setEnabled(position != questions.size() - 1);
-
         final TextView text = findViewById(R.id.question);
         Question question = this.questions.get(this.position);
         text.setText(question.getText());
@@ -148,7 +125,6 @@ public class ExamActivity extends AppCompatActivity {
 
         for (int index = 0; index != variants.getChildCount(); index++) {
             final RadioButton button = (RadioButton) variants.getChildAt(index);
-
             Option option = question.getOptions().get(index);
             button.setId(option.getId());
             button.setText(option.getText());
@@ -163,5 +139,16 @@ public class ExamActivity extends AppCompatActivity {
                 this, "Your answer is " + id + ", correct is " + question.getAnswer(),
                 Toast.LENGTH_SHORT
         ).show();
+    }
+
+    private void nextBtn(View view) {
+        showAnswer();
+        position++;
+        fillForm();
+    }
+
+    private void previousBtn(View view) {
+        position--;
+        fillForm();
     }
 }
