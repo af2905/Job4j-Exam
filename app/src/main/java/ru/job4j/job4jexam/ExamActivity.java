@@ -1,5 +1,6 @@
 package ru.job4j.job4jexam;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +18,12 @@ import java.util.List;
 
 public class ExamActivity extends AppCompatActivity {
     private static final String TAG = "ExamActivity";
+    public static final String HINT_FOR = "hint_for";
     private int count = 0;
     private int position = 0;
     RadioGroup variants;
     List<String> selectedVariants = new ArrayList<>();
+    private int rightAnswerCount = 0;
 
     private final List<Question> questions = Arrays.asList(
             new Question(1, "How many primitive variables does Java have?",
@@ -34,7 +37,7 @@ public class ExamActivity extends AppCompatActivity {
                     Arrays.asList(
                             new Option(1, "2.1"), new Option(2, "2.2"),
                             new Option(3, "2.3"), new Option(4, "2.4")
-                    ), 4
+                    ), 2
             ),
             new Question(
                     3, "What is happen if we try unboxing null?",
@@ -52,7 +55,6 @@ public class ExamActivity extends AppCompatActivity {
         this.fillForm();
 
         final Button next = findViewById(R.id.next);
-        next.setEnabled(false);
         next.setOnClickListener(this::nextBtn);
 
         final Button previous = findViewById(R.id.previous);
@@ -62,15 +64,38 @@ public class ExamActivity extends AppCompatActivity {
         variants = findViewById(R.id.variants);
         variants.setOnCheckedChangeListener((group, checkedId) -> {
             previous.setEnabled(position != 0);
-            next.setEnabled(position != questions.size() - 1);
+
+            if (position == questions.size() - 1) {
+                next.setOnClickListener(v -> {
+                    Intent intent = new Intent(
+                            ExamActivity.this, ResultActivity.class);
+                    intent.putExtra("testResult", testResult());
+                    startActivity(intent);
+                });
+            }
 
             if (variants.getCheckedRadioButtonId() != -1) {
                 RadioButton button = findViewById(variants.getCheckedRadioButtonId());
                 String asText = button.getText().toString();
                 selectedVariants.add(asText);
                 Log.d(TAG, "selectedVariants " + selectedVariants);
+
+                Question question = this.questions.get(this.position);
+
+                if (button.getId() == question.getAnswer()) {
+                    rightAnswerCount++;
+                }
             }
         });
+
+        Button hint = findViewById(R.id.hint);
+        hint.setOnClickListener(v -> {
+                    Intent intent = new Intent(ExamActivity.this, HintActivity.class);
+                    intent.putExtra(HINT_FOR, position);
+                    intent.putExtra("question", questions.get(position).getText());
+                    startActivity(intent);
+                }
+        );
 
         if (!(savedInstanceState == null)) {
             count = savedInstanceState.getInt("count");
@@ -150,5 +175,16 @@ public class ExamActivity extends AppCompatActivity {
     private void previousBtn(View view) {
         position--;
         fillForm();
+    }
+
+    private String testResult() {
+        String text = "Вы выбрали " + selectedVariants.toString() + "\n" + "" +
+                "Колличество правильных ответов: " + rightAnswerCount;
+        if (rightAnswerCount < position+1) {
+            text += " \n\nВы проиграли";
+        } else {
+            text += " \n\nВы выиграли";
+        }
+        return text;
     }
 }

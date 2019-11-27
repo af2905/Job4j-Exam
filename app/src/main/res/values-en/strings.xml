@@ -19,6 +19,7 @@
     <string name="radiobutton">RadioButton</string>
     <string name="radiobutton3">RadioButton</string>
     <string name="radiobutton4">RadioButton</string>
+    <string name="hint">Hint</string>
 
     <string-array name="domain_arrays">
         <item>Domain prompt</item>
