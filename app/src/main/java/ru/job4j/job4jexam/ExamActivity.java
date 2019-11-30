@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ExamActivity extends AppCompatActivity {
@@ -22,31 +21,12 @@ public class ExamActivity extends AppCompatActivity {
     private int count = 0;
     private int position = 0;
     RadioGroup variants;
+    Button next;
+    Button previous;
     List<String> selectedVariants = new ArrayList<>();
     private int rightAnswerCount = 0;
+    Store store = Store.getInstance();
 
-    private final List<Question> questions = Arrays.asList(
-            new Question(1, "How many primitive variables does Java have?",
-                    Arrays.asList(
-                            new Option(1, "1.1"), new Option(2, "1.2"),
-                            new Option(3, "1.3"), new Option(4, "1.4")
-                    ), 4
-            ),
-            new Question(
-                    2, "What is Java Virtual Machine?",
-                    Arrays.asList(
-                            new Option(1, "2.1"), new Option(2, "2.2"),
-                            new Option(3, "2.3"), new Option(4, "2.4")
-                    ), 2
-            ),
-            new Question(
-                    3, "What is happen if we try unboxing null?",
-                    Arrays.asList(
-                            new Option(1, "3.1"), new Option(2, "3.2"),
-                            new Option(3, "3.3"), new Option(4, "3.4")
-                    ), 4
-            )
-    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,48 +34,20 @@ public class ExamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exam);
         this.fillForm();
 
-        final Button next = findViewById(R.id.next);
+        next = findViewById(R.id.next);
         next.setOnClickListener(this::nextBtn);
 
-        final Button previous = findViewById(R.id.previous);
+        previous = findViewById(R.id.previous);
         previous.setEnabled(false);
         previous.setOnClickListener(this::previousBtn);
 
         variants = findViewById(R.id.variants);
         variants.setOnCheckedChangeListener((group, checkedId) -> {
-            previous.setEnabled(position != 0);
-
-            if (position == questions.size() - 1) {
-                next.setOnClickListener(v -> {
-                    Intent intent = new Intent(
-                            ExamActivity.this, ResultActivity.class);
-                    intent.putExtra("testResult", testResult());
-                    startActivity(intent);
-                });
-            }
-
-            if (variants.getCheckedRadioButtonId() != -1) {
-                RadioButton button = findViewById(variants.getCheckedRadioButtonId());
-                String asText = button.getText().toString();
-                selectedVariants.add(asText);
-                Log.d(TAG, "selectedVariants " + selectedVariants);
-
-                Question question = this.questions.get(this.position);
-
-                if (button.getId() == question.getAnswer()) {
-                    rightAnswerCount++;
-                }
-            }
-        });
-
-        Button hint = findViewById(R.id.hint);
-        hint.setOnClickListener(v -> {
-                    Intent intent = new Intent(ExamActivity.this, HintActivity.class);
-                    intent.putExtra(HINT_FOR, position);
-                    intent.putExtra("question", questions.get(position).getText());
-                    startActivity(intent);
+                    previous.setEnabled(position != 0);
+                    transferIntentAfterClickToResultActivity();
                 }
         );
+        showHint();
 
         if (!(savedInstanceState == null)) {
             count = savedInstanceState.getInt("count");
@@ -144,7 +96,7 @@ public class ExamActivity extends AppCompatActivity {
 
     private void fillForm() {
         final TextView text = findViewById(R.id.question);
-        Question question = this.questions.get(this.position);
+        Question question = store.getQuestions().get(this.position);
         text.setText(question.getText());
         RadioGroup variants = findViewById(R.id.variants);
 
@@ -159,11 +111,47 @@ public class ExamActivity extends AppCompatActivity {
     private void showAnswer() {
         RadioGroup variants = findViewById(R.id.variants);
         int id = variants.getCheckedRadioButtonId();
-        Question question = this.questions.get(this.position);
+        Question question = store.getQuestions().get(this.position);
         Toast.makeText(
                 this, "Your answer is " + id + ", correct is " + question.getAnswer(),
                 Toast.LENGTH_SHORT
         ).show();
+    }
+
+    private void showHint() {
+        Button hint = findViewById(R.id.hint);
+        hint.setOnClickListener(v -> {
+                    Intent intent = new Intent(ExamActivity.this, HintActivity.class);
+                    intent.putExtra(HINT_FOR, position);
+                    intent.putExtra("question", store.getQuestions().get(position).getText());
+                    startActivity(intent);
+                }
+        );
+    }
+
+    private void addSelectedVariants() {
+        if (variants.getCheckedRadioButtonId() != -1) {
+            RadioButton button = findViewById(variants.getCheckedRadioButtonId());
+            String asText = button.getText().toString();
+            selectedVariants.add(asText);
+            Log.d(TAG, "selectedVariants " + selectedVariants);
+            Question question = store.getQuestions().get(this.position);
+            if (button.getId() == question.getAnswer()) {
+                rightAnswerCount++;
+            }
+        }
+    }
+
+    private void transferIntentAfterClickToResultActivity() {
+        if (position == store.getQuestions().size() - 1) {
+            next.setOnClickListener(v -> {
+                Intent intent = new Intent(
+                        ExamActivity.this, ResultActivity.class);
+                intent.putExtra("testResult", testResult());
+                startActivity(intent);
+            });
+        }
+        addSelectedVariants();
     }
 
     private void nextBtn(View view) {
@@ -180,7 +168,7 @@ public class ExamActivity extends AppCompatActivity {
     private String testResult() {
         String text = "Вы выбрали " + selectedVariants.toString() + "\n" + "" +
                 "Колличество правильных ответов: " + rightAnswerCount;
-        if (rightAnswerCount < position+1) {
+        if (rightAnswerCount < position + 1) {
             text += " \n\nВы проиграли";
         } else {
             text += " \n\nВы выиграли";
