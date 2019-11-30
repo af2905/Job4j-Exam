@@ -1,20 +1,10 @@
 package ru.job4j.job4jexam;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.TextView;
-
-public class ResultActivity extends AppCompatActivity {
-
+public class ResultActivity extends BaseActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_result);
-
-        TextView result = findViewById(R.id.result);
-        String testResult = getIntent().getStringExtra("testResult");
-        result.setText(testResult);
+    public Fragment loadFrg() {
+        return new ResultFragment();
     }
 }
