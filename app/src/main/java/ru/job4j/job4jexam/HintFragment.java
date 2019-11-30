@@ -25,7 +25,8 @@ public class HintFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_hint, container, false);
         TextView text = view.findViewById(R.id.hint);
         int question = getActivity().getIntent()
@@ -36,5 +37,12 @@ public class HintFragment extends Fragment {
         Button back = view.findViewById(R.id.back);
         back.setOnClickListener(v -> getActivity().onBackPressed());
         return view;
+    }
+    public static HintFragment of (int index){
+        HintFragment hint = new HintFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ExamActivity.HINT_FOR, index);
+        hint.setArguments(bundle);
+        return hint;
     }
 }

@@ -20,4 +20,12 @@ public class ResultFragment extends Fragment {
         result.setText(testResult);
         return view;
     }
+    public static ResultFragment of (String index){
+        ResultFragment result = new ResultFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("testResult", index);
+        result.setArguments(bundle);
+        return result;
+    }
 }
+
