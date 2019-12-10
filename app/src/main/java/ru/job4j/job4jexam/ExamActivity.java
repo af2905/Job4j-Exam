@@ -20,10 +20,10 @@ public class ExamActivity extends AppCompatActivity {
     public static final String HINT_FOR = "hint_for";
     private int count = 0;
     private int position = 0;
-    RadioGroup variants;
-    Button next;
-    Button previous;
-    List<String> selectedVariants = new ArrayList<>();
+    private RadioGroup variants;
+    private Button next;
+    private Button previous;
+    private List<String> selectedVariants = new ArrayList<>();
     private int rightAnswerCount = 0;
     Store store = Store.getInstance();
 
@@ -130,15 +130,17 @@ public class ExamActivity extends AppCompatActivity {
     }
 
     private void addSelectedVariants() {
-        if (variants.getCheckedRadioButtonId() != -1) {
-            RadioButton button = findViewById(variants.getCheckedRadioButtonId());
-            String asText = button.getText().toString();
-            selectedVariants.add(asText);
-            Log.d(TAG, "selectedVariants " + selectedVariants);
-            Question question = store.getQuestions().get(this.position);
-            if (button.getId() == question.getAnswer()) {
-                rightAnswerCount++;
-            }
+        if (variants.getCheckedRadioButtonId() == -1) {
+            return;
+        }
+        RadioButton button = findViewById(variants.getCheckedRadioButtonId());
+        String asText = button.getText().toString();
+        selectedVariants.add(asText);
+        Log.d(TAG, "selectedVariants " + selectedVariants);
+        Question question = store.getQuestions().get(this.position);
+        if (button.getId() == question.getAnswer()) {
+            rightAnswerCount++;
+
         }
     }
 
