@@ -27,7 +27,6 @@ public class ExamActivity extends AppCompatActivity {
     private int rightAnswerCount = 0;
     Store store = Store.getInstance();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +43,9 @@ public class ExamActivity extends AppCompatActivity {
         variants = findViewById(R.id.variants);
         variants.setOnCheckedChangeListener((group, checkedId) -> {
                     previous.setEnabled(position != 0);
+                    for (int i = 0; i < variants.getChildCount(); i++) {
+                        variants.getChildAt(i).setEnabled(false);
+                    }
                     transferIntentAfterClickToResultActivity();
                 }
         );
@@ -51,39 +53,12 @@ public class ExamActivity extends AppCompatActivity {
 
         if (!(savedInstanceState == null)) {
             count = savedInstanceState.getInt("count");
+            position = savedInstanceState.getInt("position");
+            selectedVariants = savedInstanceState.getStringArrayList("selectedVariants");
+            rightAnswerCount = savedInstanceState.getInt("rightAnswerCount");
         }
         Log.d(TAG, "onCreate");
         Log.d(TAG, "count = " + count);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
     }
 
     @Override
@@ -91,6 +66,9 @@ public class ExamActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         ++count;
         outState.putInt("count", count);
+        outState.putInt("position", position);
+        outState.putStringArrayList("selectedVariants", (ArrayList<String>) selectedVariants);
+        outState.putInt("rightAnswerCount", rightAnswerCount);
         Log.d(TAG, "OnSaveInstanceState");
     }
 
@@ -140,7 +118,6 @@ public class ExamActivity extends AppCompatActivity {
         Question question = store.getQuestions().get(this.position);
         if (button.getId() == question.getAnswer()) {
             rightAnswerCount++;
-
         }
     }
 
@@ -157,6 +134,9 @@ public class ExamActivity extends AppCompatActivity {
     }
 
     private void nextBtn(View view) {
+        for (int i = 0; i < variants.getChildCount(); i++) {
+            variants.getChildAt(i).setEnabled(true);
+        }
         showAnswer();
         position++;
         fillForm();
@@ -176,5 +156,35 @@ public class ExamActivity extends AppCompatActivity {
             text += " \n\nВы выиграли";
         }
         return text;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
     }
 }
