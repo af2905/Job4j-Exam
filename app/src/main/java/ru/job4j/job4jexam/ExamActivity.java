@@ -149,13 +149,19 @@ public class ExamActivity extends AppCompatActivity {
 
     private String testResult() {
         String text = "Вы выбрали " + selectedVariants.toString() + "\n" + "" +
-                "Колличество правильных ответов: " + rightAnswerCount;
+                "Колличество правильных ответов: " + rightAnswerCount
+                + "\nПозиция : " + position + "\nРазмер : " + selectedVariants.size();
         if (rightAnswerCount < position + 1) {
             text += " \n\nВы проиграли";
         } else {
             text += " \n\nВы выиграли";
         }
         return text;
+    }
+
+    public void examList(View view) {
+        Intent intent = new Intent(this, ExamsActivity.class);
+        startActivity(intent);
     }
 
     @Override

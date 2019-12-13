@@ -75,4 +75,12 @@
             android:layout_weight="1"
             android:text="@string/next" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/exam_list"
+        style="@style/CustomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="examList"
+        android:text="@string/exam_list" />
 </LinearLayout>

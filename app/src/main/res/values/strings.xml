@@ -27,6 +27,7 @@
     <string name="radiobutton3">RadioButton</string>
     <string name="radiobutton4">RadioButton</string>
     <string name="hint">Подсказка</string>
+    <string name="exam_list">Список Экзаменов</string>
     <string-array name="date_arrays">
         <item>Выберите дату</item>
         <item>январь</item>
