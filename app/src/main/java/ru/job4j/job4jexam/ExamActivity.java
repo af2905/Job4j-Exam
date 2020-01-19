@@ -11,13 +11,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExamActivity extends AppCompatActivity {
+public class ExamActivity extends AppCompatActivity
+        implements ConfirmHintDialogFragment.ConfirmHintDialogListener {
     private static final String TAG = "ExamActivity";
     public static final String HINT_FOR = "hint_for";
+    public static final String QUESTION = "question";
     private int count = 0;
     private int position = 0;
     private RadioGroup variants;
@@ -25,6 +28,7 @@ public class ExamActivity extends AppCompatActivity {
     private Button previous;
     private List<String> selectedVariants = new ArrayList<>();
     private int rightAnswerCount = 0;
+    private Button hint;
     Store store = Store.getInstance();
 
     @Override
@@ -49,7 +53,12 @@ public class ExamActivity extends AppCompatActivity {
                     transferIntentAfterClickToResultActivity();
                 }
         );
-        showHint();
+
+        hint = findViewById(R.id.hint);
+        hint.setOnClickListener(v -> {
+            DialogFragment dialog = new ConfirmHintDialogFragment();
+            dialog.showNow(getSupportFragmentManager(), HINT_FOR);
+        });
 
         if (!(savedInstanceState == null)) {
             count = savedInstanceState.getInt("count");
@@ -94,17 +103,6 @@ public class ExamActivity extends AppCompatActivity {
                 this, "Your answer is " + id + ", correct is " + question.getAnswer(),
                 Toast.LENGTH_SHORT
         ).show();
-    }
-
-    private void showHint() {
-        Button hint = findViewById(R.id.hint);
-        hint.setOnClickListener(v -> {
-                    Intent intent = new Intent(ExamActivity.this, HintActivity.class);
-                    intent.putExtra(HINT_FOR, position);
-                    intent.putExtra("question", store.getQuestions().get(position).getText());
-                    startActivity(intent);
-                }
-        );
     }
 
     private void addSelectedVariants() {
@@ -192,5 +190,18 @@ public class ExamActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
+    }
+
+    @Override
+    public void onPositiveDialogClick(DialogFragment dialog) {
+        Intent intent = new Intent(ExamActivity.this, HintActivity.class);
+        intent.putExtra(HINT_FOR, store.getQuestions().get(position).getAnswer());
+        intent.putExtra(QUESTION, store.getQuestions().get(position).getText());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onNegativeDialogClick(DialogFragment dialog) {
+        Toast.makeText(this, "Well done!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 public class HintActivity extends BaseActivity {
     @Override
     public Fragment loadFrg() {
-        return HintFragment.of(getIntent().getIntExtra(ExamActivity.HINT_FOR, 0));
+        return HintFragment.of(getIntent().getIntExtra(ExamActivity.HINT_FOR, 0),
+                getIntent().getStringExtra(ExamActivity.QUESTION ));
     }
 }
