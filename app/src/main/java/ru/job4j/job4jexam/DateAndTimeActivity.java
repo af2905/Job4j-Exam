@@ -2,7 +2,6 @@ package ru.job4j.job4jexam;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,14 +13,12 @@ public class DateAndTimeActivity extends AppCompatActivity
         implements DatePickerFragment.DatePickerListener, TimePickerFragment.TimePickerListener {
 
     private int year, month, day, hour, minute;
-   private TextView tvDateTime;
+    private TextView tvDateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_and_time);
-
-
         tvDateTime = findViewById(R.id.tvDateTime);
 
         if (year != 0 && month != 0 && day != 0 && hour != 0 && minute != 0) {
@@ -66,4 +63,5 @@ public class DateAndTimeActivity extends AppCompatActivity
         } else right = "0" + value;
         return right;
     }
+
 }

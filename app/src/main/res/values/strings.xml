@@ -27,6 +27,8 @@
     <string name="radiobutton3">RadioButton</string>
     <string name="radiobutton4">RadioButton</string>
     <string name="hint">Подсказка</string>
+    <string name="add_item">Добавить</string>
+    <string name="delete_item">Удалить</string>
     <string name="exam_list">Список Экзаменов</string>
     <string-array name="date_arrays">
         <item>Выберите дату</item>
@@ -43,4 +45,5 @@
         <item>ноябрь</item>
         <item>декабрь</item>
     </string-array>
+    
 </resources>

@@ -21,6 +21,8 @@
     <string name="radiobutton4">RadioButton</string>
     <string name="hint">Hint</string>
     <string name="exam_list">Exam List</string>
+    <string name="add_item">Add</string>
+    <string name="delete_item">Delite</string>
 
     <string-array name="domain_arrays">
         <item>Domain prompt</item>
