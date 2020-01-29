@@ -32,12 +32,13 @@ public class ConfirmDeleteDialogFragment extends DialogFragment {
         return dialog;
     }
 
+    @SuppressWarnings({"checkstyle:LeftCurly", "checkstyle:ParenPad"})
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             callback = (ConfirmDeleteDialogListener) context;
-        }catch (ClassCastException e ){
+        } catch (ClassCastException e) {
             String.format(
                     "%s must implements ConfirmDeleteDialogListener", context.toString());
         }

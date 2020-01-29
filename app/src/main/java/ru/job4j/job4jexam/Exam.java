@@ -31,8 +31,12 @@ public class Exam {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Exam exam = (Exam) o;
         return id == exam.id;
     }
@@ -44,11 +48,11 @@ public class Exam {
 
     @Override
     public String toString() {
-        return "Exam{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", time=" + time +
-                ", result=" + result +
-                '}';
+        return "Exam{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", time=" + time
+                + ", result=" + result
+                + '}';
     }
 }

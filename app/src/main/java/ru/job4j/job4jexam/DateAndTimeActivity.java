@@ -56,11 +56,14 @@ public class DateAndTimeActivity extends AppCompatActivity
         tvDateTime.setText(text);
     }
 
+    @SuppressWarnings("checkstyle:RightCurly")
     public String addZeroIfNecessary(int value) {
         String right = "";
         if (value >= 10) {
             right = String.valueOf(value);
-        } else right = "0" + value;
+        } else {
+            right = "0" + value;
+        }
         return right;
     }
 

@@ -52,10 +52,9 @@ public class ExamsActivity extends AppCompatActivity
                         System.currentTimeMillis(), exams.size()));
                 this.recycler.setAdapter(new ExamAdapter(exams));
                 return true;
-
             case R.id.delete_item:
-              DialogFragment deleteDialog = new ConfirmDeleteDialogFragment();
-              deleteDialog.show(getSupportFragmentManager(), "deleteDialog");
+                DialogFragment deleteDialog = new ConfirmDeleteDialogFragment();
+                deleteDialog.show(getSupportFragmentManager(), "deleteDialog");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
