@@ -10,7 +10,7 @@ android:
 before_install:
   - chmod +x gradlew
   - yes | sdkmanager "platforms;android-29"
-  - echo yes | sdkmanager "build-tools;28"
+  - yes | sdkmanager "build-tools;29.0.2"
 
 script:
   - ./gradlew build assembleDebug
