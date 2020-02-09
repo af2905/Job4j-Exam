@@ -7,8 +7,7 @@ android:
     # The SDK version used to compile your project
     - android-29
 
-    run: yes | sdkmanager --licenses
-    run: yes | sdkmanager --update || exit 0
+    - echo yes | sdkmanager "build-tools;28"
 
 before_install:
   - chmod +x gradlew
