@@ -1,7 +1,7 @@
 # Job4j-Exam 
 This is a training project. The goal of the project is to master the basics of developing mobile Android applications.
 
-![Image of Yaktocat](https://github.com/af2905/Job4j-Exam/blob/master/app/images/appFirstScreen.png)
+![Image of Yaktocat](https://github.com/af2905/Job4j-Exam/blob/master/app/images/appScreens.png)
 
 The application contains screens with questions and answer options. When you click on an option, a Toast message is displayed with the correct answer. Clicking the button next shows a new question with answer options.
 

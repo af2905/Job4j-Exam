@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="16dp"
     android:orientation="vertical"
-    tools:context=".DateAndTimeActivity">
+    tools:context="ru.job4j.dialog4date4time.DateAndTimeActivity">
 
     <Button
 

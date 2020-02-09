@@ -1,0 +1,29 @@
+android:
+  components:
+
+    # The BuildTools version used by your project
+    - build-tools-29.0.2
+
+    # The SDK version used to compile your project
+    - android-29
+
+before_install:
+  - chmod +x gradlew
+  - yes | sdkmanager "platforms;android-29"
+
+script:
+  - ./gradlew build assembleDebug
+
+env:
+  global:
+    - CODECOV_TOKEN="20ba3477-b474-4a25-aedd-4d10ee098658"
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email:
+    recipients:
+      -af2905@yandex.ru
+    on_success: never # default: change
+    on_failure: always # default: always

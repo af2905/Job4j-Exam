@@ -1,49 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Job4jExam</string>
-
-    <string name="Hello">Добро пожаловать AF</string>
-    <string name="back">Назад</string>
-    <string name="next">Далее</string>
-
-    <string name="domain_prompt">Выберите область</string>
-    <string name="exp_date">Дата проведения испытания</string>
-    <string name="City">Город</string>
-    <string-array name="domain_arrays">
-        <item>Выберите область</item>
-        <item>Московская</item>
-        <item>СПб</item>
-    </string-array>
-
-    <string name="date_prompt">Выберите дату</string>
-    <string name="object_name">Имя объекта</string>
-    <string name="street_and_house">Улица и дом</string>
-    <string name="customer_name">ФИО заказчика</string>
-    <string name="air_temperature">Температура воздуха</string>
-    <string name="air_humidity">Влажность воздуха</string>
-    <string name="atmosphere_pressure">Атмосферное давление</string>
-    <string name="report_number">Номер отчета</string>
+    <string name="question">question</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
     <string name="radiobutton1">RadioButton</string>
-    <string name="radiobutton">RadioButton</string>
+    <string name="radiobutton2">RadioButton</string>
     <string name="radiobutton3">RadioButton</string>
     <string name="radiobutton4">RadioButton</string>
-    <string name="hint">Подсказка</string>
-    <string name="add_item">Добавить</string>
-    <string name="delete_item">Удалить</string>
-    <string name="exam_list">Список Экзаменов</string>
-    <string-array name="date_arrays">
-        <item>Выберите дату</item>
-        <item>январь</item>
-        <item>февраль</item>
-        <item>март</item>
-        <item>апрель</item>
-        <item>май</item>
-        <item>июнь</item>
-        <item>июль</item>
-        <item>август</item>
-        <item>сентябрь</item>
-        <item>октябрь</item>
-        <item>ноябрь</item>
-        <item>декабрь</item>
+    <string name="hint">Hint</string>
+    <string name="exam_list">Exam List</string>
+    <string name="add_item">Add</string>
+    <string name="delete_item">Delete</string>
+    <string name="add_exam">Add Exam</string>
+
+    <string name="customer_name">Customer name</string>
+    <string name="date_prompt">Date prompt</string>
+    <string name="domain_prompt">Domain prompt</string>
+    <string name="exp_date">Test date</string>
+    <string name="object_name">Object name</string>
+    <string name="report_number">Report number</string>
+    <string name="street_and_house">Street and house</string>
+    <string name="City">City</string>
+    <string name="air_humidity">Air humidity</string>
+    <string name="air_temperature">Air temperature</string>
+    <string name="atmosphere_pressure">Atmosphere pressure</string>
+
+    <string-array name="domain_arrays">
+        <item>Domain prompt</item>
+        <item>Moscow</item>
+        <item>Saint Petersburg</item>
     </string-array>
-    
+    <string-array name="date_arrays">
+        <item>Test date</item>
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
 </resources>
+
+
+
+
+
+
+
+
+
+
+
