@@ -1,4 +1,7 @@
-# Job4j-Exam 
+[![Build Status](https://travis-ci.org/af2905/Job4j-Exam.svg?branch=master)](https://travis-ci.org/af2905/Job4j-Exam)
+[![codecov](https://codecov.io/gh/af2905/Job4j-Exam/branch/master/graph/badge.svg)](https://codecov.io/gh/af2905/Job4j-Exam)
+
+# Job4j-Exam
 This is a training project. The goal of the project is to master the basics of developing mobile Android applications.
 
 ![Image of Yaktocat](https://github.com/af2905/Job4j-Exam/blob/master/app/images/appScreens.png)
