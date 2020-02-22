@@ -18,8 +18,11 @@ import ru.job4j.exam.R;
 import ru.job4j.exam.store.ExamBaseHelper;
 import ru.job4j.exam.store.ExamDbSchema;
 
-public class ExamUpdateFragment extends Fragment {
+public class ExamUpdateFragment extends Fragment implements View.OnClickListener {
     private SQLiteDatabase store;
+    private Button save;
+    private int id;
+    private TextView title;
 
     @Nullable
     @Override
@@ -27,30 +30,35 @@ public class ExamUpdateFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.exam_add_update, container, false);
         this.store = new ExamBaseHelper(this.getContext()).getWritableDatabase();
-        int id = getArguments().getInt("id");
+        id = getArguments().getInt("id");
         String name = getArguments().getString("name");
-        final TextView title = view.findViewById(R.id.name);
+        title = view.findViewById(R.id.name);
         title.setText(name);
-        Button save = view.findViewById(R.id.save);
-        save.setOnClickListener(
-                btn -> {
-                    ContentValues value = new ContentValues();
-                    value.put(ExamDbSchema.ExamTable.Cols.TITLE, title.getText().toString());
-                    store.update(ExamDbSchema.ExamTable.NAME, value, "id = ?",
-                            new String[]{String.valueOf(id)});
-                    Intent intent = new Intent(getActivity(), ExamListActivity.class);
-                    startActivity(intent);
-                }
-        );
+        save = view.findViewById(R.id.save);
+        save.setOnClickListener(this);
         return view;
     }
 
-    public static ExamUpdateFragment of(int id, String name) {
+    static ExamUpdateFragment of(int id, String name) {
         ExamUpdateFragment fragment = new ExamUpdateFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("id", id);
         bundle.putString("name", name);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.save) {
+            ContentValues value = new ContentValues();
+            value.put(ExamDbSchema.ExamTable.Cols.TITLE, title.getText().toString());
+            store.update(ExamDbSchema.ExamTable.NAME, value, "id = ?",
+                    new String[]{String.valueOf(id)});
+            Intent intent = new Intent(getActivity(), ExamListActivity.class);
+            startActivity(intent);
+        } else {
+            throw new IllegalStateException("Unexpected value: " + v.getId());
+        }
     }
 }

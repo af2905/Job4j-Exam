@@ -15,7 +15,8 @@ import ru.job4j.exam.R;
 public class ResultFragment extends Fragment {
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_result, container, false);
         TextView result = view.findViewById(R.id.result);
         String testResult = getActivity().getIntent().getStringExtra("testResult");
@@ -23,7 +24,7 @@ public class ResultFragment extends Fragment {
         return view;
     }
 
-    public static ResultFragment of(String index) {
+    static ResultFragment of(String index) {
         ResultFragment result = new ResultFragment();
         Bundle bundle = new Bundle();
         bundle.putString("testResult", index);
