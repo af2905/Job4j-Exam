@@ -122,6 +122,18 @@ public class SqlStore {
         return sqlStore;
     }
 
+    public List<Exam> loadingExams() {
+        List<Exam> allExams = new ArrayList<>();
+        allExams.addAll(getNotFinishedExams());
+        if (allExams.size() == 0) {
+            for (Exam exam : exams) {
+                addExam(exam);
+            }
+            allExams = getAllExams();
+        }
+        return allExams;
+    }
+
     public void addExam(Exam exam) {
         db = dbHelper.getWritableDatabase();
         ContentValues examValues = new ContentValues();
@@ -162,7 +174,7 @@ public class SqlStore {
         examValues.put(ExamDbSchema.ExamTable.Cols.DESC, exam.getDesc());
         examValues.put(ExamDbSchema.ExamTable.Cols.RESULT, exam.getResult());
         examValues.put(ExamDbSchema.ExamTable.Cols.DATE, exam.getDate());
-        db.update(ExamDbSchema.ExamTable.NAME, examValues,
+        long examId = db.update(ExamDbSchema.ExamTable.NAME, examValues,
                 ExamDbSchema.ExamTable.Cols.ID + " = ?",
                 new String[]{String.valueOf(exam.getId())});
     }
@@ -205,6 +217,29 @@ public class SqlStore {
         }
         cursor.close();
         return allExams;
+    }
+
+    public Exam getOnlyOneExam(int id) {
+        db = dbHelper.getReadableDatabase();
+        cursor = db.query(ExamDbSchema.ExamTable.NAME,
+                new String[]{ExamDbSchema.ExamTable.Cols.ID,
+                        ExamDbSchema.ExamTable.Cols.NAME,
+                        ExamDbSchema.ExamTable.Cols.DESC,
+                        ExamDbSchema.ExamTable.Cols.RESULT,
+                        ExamDbSchema.ExamTable.Cols.DATE},
+                ExamDbSchema.ExamTable.Cols.ID + " = ?", new String[]{String.valueOf(id)},
+                null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return new Exam(
+                cursor.getInt(cursor.getColumnIndex(ExamDbSchema.ExamTable.Cols.ID)),
+                cursor.getString(cursor.getColumnIndex(ExamDbSchema.QuestionTable.Cols.NAME)),
+                cursor.getString(cursor.getColumnIndex(ExamDbSchema.ExamTable.Cols.DESC)),
+                cursor.getString(cursor.getColumnIndex(ExamDbSchema.ExamTable.Cols.RESULT)),
+                cursor.getString(cursor.getColumnIndex(ExamDbSchema.ExamTable.Cols.DATE)),
+                new ArrayList<>());
+
     }
 
     public Exam getExam(int id) {
@@ -343,19 +378,6 @@ public class SqlStore {
                 ExamDbSchema.ExamTable.Cols.ID + " = ?",
                 new String[]{String.valueOf(exam.getId())});
         db.close();
-    }
-
-
-    public List<Exam> loadingExams() {
-        List<Exam> allExams = new ArrayList<>();
-        allExams.addAll(getNotFinishedExams());
-        if (allExams.size() == 0) {
-            for (Exam exam : exams) {
-                addExam(exam);
-            }
-            allExams = getAllExams();
-        }
-        return allExams;
     }
 }
 

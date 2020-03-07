@@ -19,7 +19,6 @@ import ru.job4j.exam.store.SqlStore;
 
 public class ExamUpdateFragment extends Fragment implements View.OnClickListener {
     private TextView title;
-    private Exam exam;
     private int examId;
 
     @Nullable
@@ -27,14 +26,12 @@ public class ExamUpdateFragment extends Fragment implements View.OnClickListener
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.exam_add_update, container, false);
-
         String name = getArguments().getString("name");
         title = view.findViewById(R.id.name);
         title.setText(name);
         Button save = view.findViewById(R.id.save);
         save.setOnClickListener(this);
         examId = getArguments().getInt("id");
-        //exam = SqlStore.getInstance(getContext()).getExam(examId);
         Log.d("log", "examId = " + examId);
         return view;
     }
@@ -51,12 +48,11 @@ public class ExamUpdateFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.save) {
-            Exam exam = SqlStore.getInstance(getContext()).getExam(examId);
+            Exam exam = SqlStore.getInstance(getContext()).getOnlyOneExam(examId);
             exam.setName(title.getText().toString());
             SqlStore.getInstance(getContext()).updateExam(exam);
             Intent intent = new Intent(getActivity(), ExamListActivity.class);
             startActivity(intent);
         }
-        throw new IllegalStateException("Unexpected value: " + v.getId());
     }
 }

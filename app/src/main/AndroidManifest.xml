@@ -16,7 +16,6 @@
         <activity android:name="ru.job4j.exam.fragments.HintActivity" />
         <activity android:name="ru.job4j.exam.fragments.BaseActivity" />
         <activity android:name=".fragments.ExamDescriptionActivity" />
-        <activity android:name=".fragments.ExamAddActivity" />
         <activity android:name=".fragments.ChooseExamActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
