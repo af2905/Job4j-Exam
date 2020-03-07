@@ -16,7 +16,7 @@
         tools:text="result" />
 
     <Button
-        android:id="@+id/exam_list"
+        android:id="@+id/save_result"
         style="@style/CustomButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

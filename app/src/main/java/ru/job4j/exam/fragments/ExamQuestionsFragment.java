@@ -16,9 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import ru.job4j.exam.CalculateCorrectAnswer;
+import ru.job4j.exam.CalendarFormat;
 import ru.job4j.exam.R;
 import ru.job4j.exam.model.Exam;
 import ru.job4j.exam.model.Option;
@@ -154,6 +156,14 @@ public class ExamQuestionsFragment extends Fragment
         if (position == exam.getQuestions().size() - 1) {
             next.setOnClickListener(v -> {
                         addSelectedVariants();
+                        int percent = CalculateCorrectAnswer.percent(position, rightAnswerCount);
+                        String result = percent + "%";
+                        SqlStore.getInstance(getContext()).addExam(
+                                new Exam(exam.getName(),
+                                        exam.getDesc(),
+                                        result,
+                                        CalendarFormat.dateFormatMethod(),
+                                        new ArrayList<>()));
                         Intent intent = new Intent(
                                 getActivity(), ResultActivity.class);
                         intent.putExtra(RESULT, examResultText());
@@ -169,7 +179,6 @@ public class ExamQuestionsFragment extends Fragment
                         + "\nThe percentage of correct answers is %d.",
                 rightAnswerCount, position + 1,
                 CalculateCorrectAnswer.percent(position, rightAnswerCount));
-
         if (CalculateCorrectAnswer.percent(position, rightAnswerCount) < 70) {
             text += " \n\nExam failed.";
         } else {

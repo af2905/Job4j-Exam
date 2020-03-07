@@ -1,9 +1,8 @@
 package ru.job4j.exam.fragments;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,12 +21,10 @@ import java.util.List;
 
 import ru.job4j.exam.R;
 import ru.job4j.exam.model.Exam;
-import ru.job4j.exam.store.ExamBaseHelper;
-import ru.job4j.exam.store.ExamDbSchema;
+import ru.job4j.exam.store.SqlStore;
 
 public class ExamListFragment extends Fragment {
     private RecyclerView recycler;
-    private SQLiteDatabase store;
 
     @Nullable
     @Override
@@ -36,9 +33,13 @@ public class ExamListFragment extends Fragment {
         View view = inflater.inflate(R.layout.exam_list, container, false);
         this.recycler = view.findViewById(R.id.list);
         this.recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        this.store = new ExamBaseHelper(this.getContext()).getWritableDatabase();
         updateUI();
         return view;
+    }
+
+    private void updateUI() {
+        List<Exam> exams = SqlStore.getInstance(getContext()).getFinishedExams();
+        recycler.setAdapter(new ExamAdapter(exams));
     }
 
     @Override
@@ -63,73 +64,43 @@ public class ExamListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateUI() {
-       /* List<Exam> exams = new ArrayList<>();
-        Cursor cursor = this.store.query(
-                ExamDbSchema.ExamTable.NAME,
-                null, null, null,
-                null, null, null
-        );
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            exams.add(new Exam(cursor.getInt(cursor.getColumnIndex("id")),
-                    cursor.getString(cursor.getColumnIndex("title")),
-                    System.currentTimeMillis(),
-                    100
-            ));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        this.recycler.setAdapter(new ExamAdapter(exams));*/
-    }
-
-    class ExamHolder extends RecyclerView.ViewHolder {
-        private View view;
-
-        ExamHolder(@NonNull View itemView) {
-            super(itemView);
-            this.view = itemView;
-        }
-    }
-
-    public class ExamAdapter extends RecyclerView.Adapter<ExamHolder> {
+    public class ExamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private final List<Exam> exams;
 
-        public ExamAdapter(List<Exam> exams) {
+        ExamAdapter(List<Exam> exams) {
             this.exams = exams;
         }
 
         @NonNull
         @Override
-        public ExamHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-            LayoutInflater inflater = LayoutInflater.from(getActivity());
-            View view = inflater.inflate(R.layout.exam, parent, false);
-            return new ExamHolder(view);
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new RecyclerView.ViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.exam, parent, false)) {
+            };
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ExamHolder holder, int i) {
-            Exam exam = this.exams.get(i);
-            TextView text = holder.view.findViewById(R.id.q_text);
-            if ((i % 2) == 0) {
-                holder.view.setBackgroundColor(Color.parseColor("#d8d8d8"));
-            }
-            text.setText(exam.getName());
-            holder.view.findViewById(R.id.edit).setOnClickListener(
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            Exam exam = this.exams.get(position);
+            TextView name = holder.itemView.findViewById(R.id.q_text);
+            name.setText(exam.getName());
+            TextView result = holder.itemView.findViewById(R.id.result);
+            result.setText(exam.getResult());
+            TextView date = holder.itemView.findViewById(R.id.date);
+            date.setText(exam.getDate());
+            holder.itemView.findViewById(R.id.edit).setOnClickListener(
                     btn -> {
                         Intent intent = new Intent(getActivity(), ExamUpdateActivity.class);
                         intent.putExtra("id", exam.getId());
                         intent.putExtra("name", exam.getName());
+                        Log.d("log", "exam.getId() = " + exam.getId());
                         startActivity(intent);
-                    }
-            );
-            holder.view.findViewById(R.id.delete)
+                    });
+            holder.itemView.findViewById(R.id.delete)
                     .setOnClickListener(
                             btn -> {
-                                store.delete(ExamDbSchema.ExamTable.NAME, "id = ?",
-                                        new String[]{String.valueOf(exam.getId())});
-                                exams.remove(exam);
-                                notifyItemRemoved(i);
+                                SqlStore.getInstance(getContext()).deleteExam(exam);
+                                updateUI();
                             }
                     );
         }

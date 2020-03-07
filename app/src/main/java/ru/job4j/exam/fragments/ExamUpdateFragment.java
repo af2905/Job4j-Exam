@@ -1,9 +1,8 @@
 package ru.job4j.exam.fragments;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,27 +14,28 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import ru.job4j.exam.R;
-import ru.job4j.exam.store.ExamBaseHelper;
-import ru.job4j.exam.store.ExamDbSchema;
+import ru.job4j.exam.model.Exam;
+import ru.job4j.exam.store.SqlStore;
 
 public class ExamUpdateFragment extends Fragment implements View.OnClickListener {
-    private SQLiteDatabase store;
-    private Button save;
-    private int id;
     private TextView title;
+    private Exam exam;
+    private int examId;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.exam_add_update, container, false);
-        this.store = new ExamBaseHelper(this.getContext()).getWritableDatabase();
-        id = getArguments().getInt("id");
+
         String name = getArguments().getString("name");
         title = view.findViewById(R.id.name);
         title.setText(name);
-        save = view.findViewById(R.id.save);
+        Button save = view.findViewById(R.id.save);
         save.setOnClickListener(this);
+        examId = getArguments().getInt("id");
+        //exam = SqlStore.getInstance(getContext()).getExam(examId);
+        Log.d("log", "examId = " + examId);
         return view;
     }
 
@@ -51,14 +51,12 @@ public class ExamUpdateFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.save) {
-            ContentValues value = new ContentValues();
-            value.put(ExamDbSchema.ExamTable.Cols.NAME, title.getText().toString());
-            store.update(ExamDbSchema.ExamTable.NAME, value, "id = ?",
-                    new String[]{String.valueOf(id)});
+            Exam exam = SqlStore.getInstance(getContext()).getExam(examId);
+            exam.setName(title.getText().toString());
+            SqlStore.getInstance(getContext()).updateExam(exam);
             Intent intent = new Intent(getActivity(), ExamListActivity.class);
             startActivity(intent);
-        } else {
-            throw new IllegalStateException("Unexpected value: " + v.getId());
         }
+        throw new IllegalStateException("Unexpected value: " + v.getId());
     }
 }
