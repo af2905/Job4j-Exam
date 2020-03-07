@@ -1,7 +1,6 @@
 package ru.job4j.exam.fragments;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ru.job4j.exam.R;
@@ -57,18 +55,16 @@ public class ExamListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_exam:
-                Intent intent = new Intent(getActivity(), ExamAddActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.add_exam) {
+            Intent intent = new Intent(getActivity(), ExamAddActivity.class);
+            startActivity(intent);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
-    void updateUI() {
-        List<Exam> exams = new ArrayList<>();
+    private void updateUI() {
+       /* List<Exam> exams = new ArrayList<>();
         Cursor cursor = this.store.query(
                 ExamDbSchema.ExamTable.NAME,
                 null, null, null,
@@ -84,13 +80,13 @@ public class ExamListFragment extends Fragment {
             cursor.moveToNext();
         }
         cursor.close();
-        this.recycler.setAdapter(new ExamAdapter(exams));
+        this.recycler.setAdapter(new ExamAdapter(exams));*/
     }
 
-    public class ExamHolder extends RecyclerView.ViewHolder {
+    class ExamHolder extends RecyclerView.ViewHolder {
         private View view;
 
-        public ExamHolder(@NonNull View itemView) {
+        ExamHolder(@NonNull View itemView) {
             super(itemView);
             this.view = itemView;
         }

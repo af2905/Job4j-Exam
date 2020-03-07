@@ -39,7 +39,7 @@ public class ExamAddFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.save) {
             ContentValues value = new ContentValues();
-            value.put(ExamDbSchema.ExamTable.Cols.TITLE, edit.getText().toString());
+            value.put(ExamDbSchema.ExamTable.Cols.NAME, edit.getText().toString());
             store.insert(ExamDbSchema.ExamTable.NAME, null, value);
             FragmentManager fm = getActivity().getSupportFragmentManager();
             fm.beginTransaction()

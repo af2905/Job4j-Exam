@@ -10,12 +10,15 @@
         android:id="@+id/question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/question" />
+        android:text="@string/question"
+        android:textAlignment="center"
+        android:textSize="18sp" />
 
     <RadioGroup
         android:id="@+id/variants"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="left"
         android:orientation="vertical">
 
         <RadioButton
@@ -23,6 +26,7 @@
             style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tag="1"
             android:text="@string/radiobutton1" />
 
         <RadioButton
@@ -30,6 +34,7 @@
             style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tag="2"
             android:text="@string/radiobutton2" />
 
         <RadioButton
@@ -37,6 +42,7 @@
             style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tag="3"
             android:text="@string/radiobutton3" />
 
         <RadioButton
@@ -44,6 +50,7 @@
             style="@style/CustomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tag="4"
             android:text="@string/radiobutton4" />
     </RadioGroup>
 
@@ -75,11 +82,4 @@
             android:layout_weight="1"
             android:text="@string/next" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/exam_list"
-        style="@style/CustomButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/exam_list" />
 </LinearLayout>

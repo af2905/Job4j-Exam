@@ -9,7 +9,7 @@
     <string name="radiobutton3">RadioButton</string>
     <string name="radiobutton4">RadioButton</string>
     <string name="hint">Hint</string>
-    <string name="exam_list">Exam List</string>
+    <string name="save_result">save result</string>
     <string name="add_item">Add</string>
     <string name="delete_item">Delete</string>
     <string name="add_exam">Add Exam</string>
@@ -25,6 +25,7 @@
     <string name="air_humidity">Air humidity</string>
     <string name="air_temperature">Air temperature</string>
     <string name="atmosphere_pressure">Atmosphere pressure</string>
+    <string name="start">start</string>
 
     <string-array name="domain_arrays">
         <item>Domain prompt</item>

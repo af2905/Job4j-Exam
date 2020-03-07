@@ -1,4 +1,4 @@
-package ru.job4j.exam.model;
+package ru.job4j.exam;
 
 public class CalculateCorrectAnswer {
     public static int percent(int position, int rightAnswerCount) {

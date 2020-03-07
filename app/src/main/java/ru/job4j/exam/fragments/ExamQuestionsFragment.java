@@ -2,6 +2,7 @@ package ru.job4j.exam.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,26 +18,33 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Locale;
 
+import ru.job4j.exam.CalculateCorrectAnswer;
 import ru.job4j.exam.R;
-import ru.job4j.exam.model.CalculateCorrectAnswer;
+import ru.job4j.exam.model.Exam;
 import ru.job4j.exam.model.Option;
 import ru.job4j.exam.model.Question;
-import ru.job4j.exam.store.Store;
+import ru.job4j.exam.store.SqlStore;
 
 public class ExamQuestionsFragment extends Fragment
         implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private View view;
-    private static int position = 0;
     private RadioGroup variants;
-    private Button next;
-    private Button previous;
-    private Button examList;
-    private int rightAnswerCount = 0;
-    private Button hint;
-    Store store = Store.getInstance();
+    private RadioButton radioButton;
+    private Button previous, next;
+    private static Exam exam;
+    private static Question question;
+    private int examId, rightAnswerCount;
+    private static int position = 0;
+    private static final String TAG = "log";
+    static final String RESULT = "examResult";
 
-    public static int getPosition() {
-        return position;
+    static int getRightAnswer() {
+        question = exam.getQuestions().get(position);
+        return question.getCorrect();
+    }
+
+    public static String getQuestion() {
+        return question.getDesc();
     }
 
     @Nullable
@@ -44,101 +52,65 @@ public class ExamQuestionsFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.exam_questions, container, false);
-        fillForm(view);
         next = view.findViewById(R.id.next);
         next.setOnClickListener(this);
         previous = view.findViewById(R.id.previous);
         previous.setEnabled(false);
         previous.setOnClickListener(this);
-        variants.setOnCheckedChangeListener(this);
-        hint = view.findViewById(R.id.hint);
+        Button hint = view.findViewById(R.id.hint);
         hint.setOnClickListener(this);
-        examList = view.findViewById(R.id.exam_list);
-        examList.setOnClickListener(this);
-
+        examId = getArguments().getInt("id");
+        exam = SqlStore.getInstance(getContext()).getExam(examId);
+        fillForm(view);
+        variants.setOnCheckedChangeListener(this);
         if (!(savedInstanceState == null)) {
-            position = savedInstanceState.getInt("position");
             rightAnswerCount = savedInstanceState.getInt("rightAnswerCount");
         }
         return view;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("position", position);
-        outState.putInt("rightAnswerCount", rightAnswerCount);
-    }
-
     private void fillForm(View view) {
         TextView text = view.findViewById(R.id.question);
-        Question question = store.getQuestions().get(position);
-        text.setText(question.getText());
+        question = exam.getQuestions().get(position);
+        text.setText(String.format("%s\n%s", question.getName(), question.getDesc()));
         variants = view.findViewById(R.id.variants);
-        for (int index = 0; index != variants.getChildCount(); index++) {
-            final RadioButton button = (RadioButton) variants.getChildAt(index);
-            Option option = question.getOptions().get(index);
-            button.setId(option.getId());
-            button.setText(option.getText());
-        }
         variants.clearCheck();
+        for (int index = 0; index != variants.getChildCount(); index++) {
+            radioButton = (RadioButton) variants.getChildAt(index);
+            Option option = question.getOptions().get(index);
+            radioButton.setId(option.getId());
+            radioButton.setText(option.getText());
+        }
         for (int i = 0; i < variants.getChildCount(); i++) {
             variants.getChildAt(i).setEnabled(true);
         }
     }
 
-    private void addSelectedVariants() {
-        if (variants.getCheckedRadioButtonId() == -1) {
-            return;
-        }
-        RadioButton button = getActivity().findViewById(variants.getCheckedRadioButtonId());
-        Question question = store.getQuestions().get(this.position);
-        if (button.getId() == question.getAnswer()) {
-            rightAnswerCount++;
-        }
+    static ExamQuestionsFragment of(int id) {
+        ExamQuestionsFragment fragment = new ExamQuestionsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", id);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
-    private void transferIntentAfterClickToResultActivity() {
-        if (position == store.getQuestions().size() - 1) {
-            next.setOnClickListener(v -> {
-                Intent intent = new Intent(
-                        getActivity(), ResultActivity.class);
-                intent.putExtra("testResult", examResultText());
-                startActivity(intent);
-            });
-        }
-        addSelectedVariants();
-    }
-
-    private String examResultText() {
-        String text = String.format(Locale.getDefault(),
-                "You correctly answered %d of %d exam questions. "
-                        + "\n\nThe percentage of correct answers is %d.",
-                rightAnswerCount, position + 1,
-                CalculateCorrectAnswer.percent(position, rightAnswerCount));
-
-        if (CalculateCorrectAnswer.percent(position, rightAnswerCount) < 70) {
-            text += " \n\nExam failed.";
-        } else {
-            text += " \n\nExam passed!";
-        }
-        return text;
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("rightAnswerCount", rightAnswerCount);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.next:
+                addSelectedVariants();
                 position++;
                 fillForm(view);
                 break;
             case R.id.previous:
                 position--;
                 fillForm(view);
-                break;
-            case R.id.exam_list:
-                Intent intent = new Intent(getActivity(), ExamListActivity.class);
-                startActivity(intent);
                 break;
             case R.id.hint:
                 DialogFragment dialog = new ConfirmHintDialogFragment();
@@ -153,10 +125,57 @@ public class ExamQuestionsFragment extends Fragment
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         previous.setEnabled(position != 0);
-        for (int i = 0; i < variants.getChildCount(); i++) {
-            variants.getChildAt(i).setEnabled(false);
+        for (int i = 0; i < group.getChildCount(); i++) {
+            group.getChildAt(i).setEnabled(false);
         }
         transferIntentAfterClickToResultActivity();
+    }
+
+    private void addSelectedVariants() {
+        int checkedId = variants.getCheckedRadioButtonId();
+        if (checkedId == -1) {
+            return;
+        }
+        radioButton = variants.findViewById(checkedId);
+        int checkedIndex = variants.indexOfChild(radioButton);
+        RadioButton rb = (RadioButton) variants.getChildAt(checkedIndex);
+        int id = Integer.parseInt(rb.getTag().toString());
+        question.setAnswer(id);
+        SqlStore.getInstance(getContext()).updateQuestion(examId, exam.getQuestions().get(position));
+        if (question.getAnswer() == question.getCorrect()) {
+            ++rightAnswerCount;
+        }
+        Log.d(TAG, "id = " + id
+                + " - question.getCorrect() = " + question.getCorrect()
+                + " - rightAnswerCount = " + rightAnswerCount);
+    }
+
+    private void transferIntentAfterClickToResultActivity() {
+        if (position == exam.getQuestions().size() - 1) {
+            next.setOnClickListener(v -> {
+                        addSelectedVariants();
+                        Intent intent = new Intent(
+                                getActivity(), ResultActivity.class);
+                        intent.putExtra(RESULT, examResultText());
+                        startActivity(intent);
+                    }
+            );
+        }
+    }
+
+    private String examResultText() {
+        String text = String.format(Locale.getDefault(),
+                "You correctly answered %d of %d exam questions. "
+                        + "\nThe percentage of correct answers is %d.",
+                rightAnswerCount, position + 1,
+                CalculateCorrectAnswer.percent(position, rightAnswerCount));
+
+        if (CalculateCorrectAnswer.percent(position, rightAnswerCount) < 70) {
+            text += " \n\nExam failed.";
+        } else {
+            text += " \n\nCONGRATULATIONS!\nEXAM PASSED!";
+        }
+        return text;
     }
 }
 

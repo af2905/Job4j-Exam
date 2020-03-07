@@ -19,17 +19,17 @@ public class ResultFragment extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_result, container, false);
         TextView result = view.findViewById(R.id.result);
-        String testResult = getActivity().getIntent().getStringExtra("testResult");
-        result.setText(testResult);
+        String resultText = getArguments().getString(ExamQuestionsFragment.RESULT);
+        result.setText(resultText);
         return view;
     }
 
-    static ResultFragment of(String index) {
-        ResultFragment result = new ResultFragment();
+    static ResultFragment of(String result) {
+        ResultFragment fragment = new ResultFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("testResult", index);
-        result.setArguments(bundle);
-        return result;
+        bundle.putString(ExamQuestionsFragment.RESULT, result);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 }
 

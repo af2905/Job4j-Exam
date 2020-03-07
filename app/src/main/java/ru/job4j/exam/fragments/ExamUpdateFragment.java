@@ -52,7 +52,7 @@ public class ExamUpdateFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         if (v.getId() == R.id.save) {
             ContentValues value = new ContentValues();
-            value.put(ExamDbSchema.ExamTable.Cols.TITLE, title.getText().toString());
+            value.put(ExamDbSchema.ExamTable.Cols.NAME, title.getText().toString());
             store.update(ExamDbSchema.ExamTable.NAME, value, "id = ?",
                     new String[]{String.valueOf(id)});
             Intent intent = new Intent(getActivity(), ExamListActivity.class);
