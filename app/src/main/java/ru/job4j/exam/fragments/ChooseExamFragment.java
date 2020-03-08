@@ -17,7 +17,7 @@ import java.util.List;
 
 import ru.job4j.exam.R;
 import ru.job4j.exam.model.Exam;
-import ru.job4j.exam.store.SqlStore;
+import ru.job4j.exam.store.InitSql;
 
 public class ChooseExamFragment extends Fragment {
     private RecyclerView recycler;
@@ -34,7 +34,7 @@ public class ChooseExamFragment extends Fragment {
     }
 
     private void updateUI() {
-        List<Exam> exams = SqlStore.getInstance(getContext()).loadingExams();
+        List<Exam> exams = InitSql.getInstance(getContext()).loadingExams();
         recycler.setAdapter(new ChooseExamAdapter(exams));
     }
 
